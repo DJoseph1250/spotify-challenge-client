@@ -1,0 +1,42 @@
+#buttons {
+    width: 500px;
+    color: white;
+    /*list-style-type: none;*/
+}
+
+#get-people {
+
+}
+
+#post-people {
+
+}
+
+#get-people-again {
+
+}
+
+#put-people {
+
+}
+
+#get-by-id {
+
+}
+
+#delete {
+
+}
+
+#get-people-final {
+    
+}
+
+.container {
+    margin-top: 10%;
+}
+
+.col {
+    border-width: 2px;
+    border-style: solid;
+}
