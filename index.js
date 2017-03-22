@@ -1,19 +1,26 @@
 $(document).ready(function() { 
-    // Easy way to disable buttons
-    $('button').prop('disabled', true);
-    $("#get-people").prop("disabled", false);
 
-    $("#get-people").click(function() { 
-        $("#api-response").append(people.responseText);
+  //Reset database state to default
+  $.ajax({
+    method: "DELETE",
+    url: personUrl,
+    success: function () { 
+      updateVars();
+      // Easy way to disable buttons
+      $('button').prop('disabled', true);
+      $("#get-people").prop("disabled", false); 
+      
+      $("#get-people").click(function() { 
+        $("#api-response").empty().append(people.responseText);
         $("#post-people").prop("disabled", false);
         $("#get-people").prop("disabled", true);
-     });
+      });
 
-     $("#post-people").click(function () { 
-        $.post(apiUrl, { name: "Sean", favoriteCity: "New York" });
+      $("#post-people").click(function () { 
+        $.post(apiUrl, {_id: "1", name: "Sean", favoriteCity: "New York" });
+        updateVars();
         $("#get-people-again").prop("disabled", false);
         $("#post-people").prop("disabled", true);
-        updatePeople();
       });
 
       $("#get-people-again").click(function () { 
@@ -24,17 +31,18 @@ $(document).ready(function() {
 
       $("#put-people").click(function () { 
         $.ajax({
-            method: "PUT",
-            url: apiUrl + id,
-            dataType: "json",
-            data: {
-                "favoriteCity": "Brooklyn"
-            },
-            success: function () {
-                $("#get-by-id").prop("disabled", false);
-                $("#put-people").prop("disabled", true);
-                updatePeople();
-            }
+          method: "PUT",
+          url: personUrl,
+          dataType: "json",
+          data: {
+            "name": "Sean",
+            "favoriteCity": "Brooklyn"
+          },
+          success: function () {
+            $("#get-by-id").prop("disabled", false);
+            $("#put-people").prop("disabled", true);
+            updateVars();
+          }
         });
       });
 
@@ -46,28 +54,25 @@ $(document).ready(function() {
 
       $("#delete").click(function () { 
         $.ajax({
-            method: "DELETE",
-            url: apiUrl + id,
-            success: function () {  
-                $("#get-people-final").prop("disabled", false);
-                $("#delete").prop("disabled", true);
-                updatePeople();
-            }
+          method: "DELETE",
+          url: personUrl,
+          success: function () {  
+            $("#get-people").prop("disabled", false);
+            $("#delete").prop("disabled", true);
+            updateVars();
+          }
         });
       });
-
-      $("#get-people-final").click(function () { 
-        $("#api-response").empty().append(people.responseText);
-        $("#get-people-final").prop("disabled", true);
-      });
-
- });
+    }
+  });
+});
         
-var id = "58d16399e3f498001129c2de";
 var apiUrl = "https://mighty-sands-78553.herokuapp.com/api/people/";        
 var people = $.get(apiUrl);
-var person = $.get(apiUrl + id);
+var personUrl = "https://mighty-sands-78553.herokuapp.com/api/people/1";
+var person = $.get(personUrl);
 
-function updatePeople() {
-    people = $.get(apiUrl);
+function updateVars() {
+  people = $.get(apiUrl);
+  person = $.get(personUrl)
 }
